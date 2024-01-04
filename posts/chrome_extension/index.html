@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html>
+
+<head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta http-equiv="Accept-CH" content="DPR, Viewport-Width, Width">
+<link rel="icon" href=/images/icon_1.png type="image/gif">
+
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload"
+      as="style"
+      href="https://fonts.googleapis.com/css2?family=Alata&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+>
+<link rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Alata&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+      media="print" onload="this.media='all'" />
+<noscript>
+  <link
+          href="https://fonts.googleapis.com/css2?family=Alata&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+          rel="stylesheet">
+</noscript>
+
+
+<link rel="stylesheet" href="/css/font.css" media="all">
+
+
+
+<meta property="og:title" content="Chrome Extension" />
+<meta property="og:description" content="Summary: This is a real-life case study about one of my work projects. Facing inefficiencies and limitations of the no-code tool we used, I built a Chrome extension to streamline our data analysis process and enhance error detection. This tool reduces the time we spend on manual data checks and analysis by 25% per month, significantly boosting team productivity. Tools, I leaned on: JS, Python, GCP.
+Working in a small non-profit in a fast-paced environment usually puts you in a place where you need to choose between using an overpriced technical tool or a cheap tool." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://mariavyso.github.io/posts/chrome_extension/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2023-06-17T16:26:41-08:00" />
+<meta property="article:modified_time" content="2023-06-17T16:26:41-08:00" /><meta property="og:site_name" content=" " />
+
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Chrome Extension"/>
+<meta name="twitter:description" content="Summary: This is a real-life case study about one of my work projects. Facing inefficiencies and limitations of the no-code tool we used, I built a Chrome extension to streamline our data analysis process and enhance error detection. This tool reduces the time we spend on manual data checks and analysis by 25% per month, significantly boosting team productivity. Tools, I leaned on: JS, Python, GCP.
+Working in a small non-profit in a fast-paced environment usually puts you in a place where you need to choose between using an overpriced technical tool or a cheap tool."/>
+
+
+<link rel="stylesheet" href="/bootstrap-5/css/bootstrap.min.css" media="all"><link rel="stylesheet" href="/css/header.css" media="all">
+<link rel="stylesheet" href="/css/footer.css" media="all">
+
+
+<link rel="stylesheet" href="/css/theme.css" media="all">
+
+
+
+<link rel="stylesheet" href="/style.css">
+
+
+<style>
+    :root {
+        --text-color: #F5F5F5;
+        --text-secondary-color: #F5F5F5;
+        --background-color: #313552;
+        --secondary-background-color: #64ffda1a;
+        --primary-color: #F1E0AC;
+        --secondary-color: #30475E;
+
+         
+        --text-color-dark: #e4e6eb;
+        --text-secondary-color-dark: #b0b3b8;
+        --background-color-dark: #18191a;
+        --secondary-background-color-dark: #212529;
+        --primary-color-dark: #ffffff;
+        --secondary-color-dark: #212529;
+    }
+    body {
+        font-size: 1rem;
+        font-weight: 400;
+        line-height: 1.5;
+        text-align: left;
+    }
+
+    html {
+        background-color: var(--background-color) !important;
+    }
+
+    body::-webkit-scrollbar {
+        width: .5em;
+        height: .5em;
+        background-color: var(--background-color);
+    }
+    
+    ::-webkit-scrollbar-track {
+        box-shadow: inset 0 0 6px var(--background-color);
+        border-radius: 1rem;
+    }
+    
+    ::-webkit-scrollbar-thumb {
+        border-radius: 1rem;
+        background-color: var(--secondary-color);
+        outline: 1px solid var(--background-color);
+    }
+
+    #search-content::-webkit-scrollbar {
+        width: .5em;
+        height: .1em;
+        background-color: var(--background-color);
+    }
+</style>
+
+<meta name="description" content="">
+<link rel="stylesheet" href="/css/single.css">
+
+
+<script defer src="/fontawesome-5/all-5.15.4.js"></script>
+
+  <title>
+Chrome Extension | Mariia Vysochina
+
+  </title>
+</head>
+
+<body class="light">
+  
+  
+<script>
+    let localStorageValue = localStorage.getItem("pref-theme");
+    let mediaQuery = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+    switch (localStorageValue) {
+        case "dark":
+            document.body.classList.add('dark');
+            break;
+        case "light":
+            document.body.classList.remove('dark');
+            break;
+        default:
+            if (mediaQuery) {
+                document.body.classList.add('dark');
+            }
+            break;
+    }
+</script>
+
+
+
+<header>
+    <nav class="pt-3 navbar navbar-expand-lg animate">
+        <div class="container-fluid mx-xs-2 mx-sm-5 mx-md-5 mx-lg-5">
+            
+            <a class="navbar-brand primary-font text-wrap" href="/">
+                
+                <img src="/images/icon_1.png" width="30" height="30"
+                    class="d-inline-block align-top">
+                 
+                
+            </a>
+
+            
+
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent"
+                aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+                <svg aria-hidden="true" height="24" viewBox="0 0 16 16" version="1.1" width="24" data-view-component="true">
+                    <path fill-rule="evenodd" d="M1 2.75A.75.75 0 011.75 2h12.5a.75.75 0 110 1.5H1.75A.75.75 0 011 2.75zm0 5A.75.75 0 011.75 7h12.5a.75.75 0 110 1.5H1.75A.75.75 0 011 7.75zM1.75 12a.75.75 0 100 1.5h12.5a.75.75 0 100-1.5H1.75z"></path>
+                </svg>
+            </button>
+
+            
+            <div class="collapse navbar-collapse text-wrap primary-font" id="navbarContent">
+                <ul class="navbar-nav ms-auto text-center">
+                    
+
+                    
+
+                    
+                    <li class="nav-item navbar-text">
+                        <a class="nav-link" href="/#experience"
+                            aria-label="experience">
+                            Experience
+                        </a>
+                    </li>
+                    
+
+                    
+                    <li class="nav-item navbar-text">
+                        <a class="nav-link" href="/#projects"
+                            aria-label="projects">
+                            Projects
+                        </a>
+                    </li>
+                    
+
+                    
+                    <li class="nav-item navbar-text">
+                        <a class="nav-link" href="/#education"
+                            aria-label="education">
+                            Education
+                        </a>
+                    </li>
+                    
+
+
+                    
+
+                    
+                    <li class="nav-item navbar-text">
+                        <a class="nav-link" href="/#contact"
+                            aria-label="contact">
+                            Contact
+                        </a>
+                    </li>
+                    
+
+                    
+                    
+                    
+                    
+                    <li class="nav-item navbar-text">
+                        <a class="nav-link" href="" title="">
+                            
+                            
+                        </a>
+                    </li>
+                    
+                    
+                    
+                    
+                    <li class="nav-item navbar-text">
+                        <a class="nav-link" href="" title="">
+                            
+                            
+                        </a>
+                    </li>
+                    
+                    
+
+                    
+                    <li class="nav-item navbar-text">
+                        
+                        <div class="text-center">
+                            <button id="theme-toggle">
+                                <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                                </svg>
+                                <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="5"></circle>
+                                    <line x1="12" y1="1" x2="12" y2="3"></line>
+                                    <line x1="12" y1="21" x2="12" y2="23"></line>
+                                    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                                    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                                    <line x1="1" y1="12" x2="3" y2="12"></line>
+                                    <line x1="21" y1="12" x2="23" y2="12"></line>
+                                    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                                    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                                </svg>
+                            </button>
+                        </div>
+                    </li>
+                    
+
+                </ul>
+
+            </div>
+        </div>
+    </nav>
+</header>
+<div id="content">
+<section id="single">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-sm-12 col-md-12 col-lg-9">
+        <div class="pr-lg-4">
+          <div class="title mb-5">
+            <h1 class="text-center mb-4">Chrome Extension</h1>
+            <div class="text-center">
+               
+              <small>|</small>
+              Jun 17, 2023
+
+              
+              <span id="readingTime">
+                min read
+              </span>
+              
+            </div>
+          </div>
+          
+          <article class="page-content  p-2">
+          <h5>Summary: <br>This is a real-life case study about one of my work projects. Facing inefficiencies and limitations of the no-code tool we used, I built a Chrome extension to streamline our data analysis process and enhance error detection. 
+<br>This tool reduces the time we spend on manual data checks and analysis by 25% per month, significantly boosting team productivity. </h5> 
+<p><br><strong>Tools, I leaned on:</strong> JS, Python, GCP.</p>
+<hr>
+<p><br>Working in a small non-profit in a fast-paced environment usually puts you in a place where you need to choose between using an overpriced technical tool or a cheap tool. Choosing cheap doesn’t always mean that it suits your needs, but it always means that you need to do an additional job to make it work for you.</p>
+<p>In my job as a Technical and Data Director in the Localyst, I met this problem face to face. The main tool used in the company daily and made up 90% of the work was a no-code platform for assembling automatic bots for Facebook Messenger. Since the team had no developers and was a venture of a non-profit incubator that used the same platform, this was a logical decision. Before I was hired on the team, data analysis from the Facebook bot was done manually through this no-code platform. In one of the tabs, there was a database of users, and when building the bot, special attributes were assigned to each user who performed a certain action (clicked on a button and received an attribute).</p>
+<p>Since the company was engaged in a narrative change about renewable energy, the bot was the main place for distributing content, and collecting and analyzing data was crucial in making decisions about the company&rsquo;s further actions.</p>
+<p>Unfortunately, life is more cunning than our plans, and while I was writing the same scripts in Python weekly, the platform we were using began to increase the number of errors rapidly. The main one was the lack of validation of the attribute field assigned to the user. Thus, one day we were unable to receive data on clicks in the broadcast we sent because the attribute contained a hidden symbol - line break. Of course, when checking the bot, this symbol was not visible and only after researching this error, I managed to find what was wrong by digging into the Chrome dev tool and the requests that were sent from the platform’s front end to their database.</p>
+<blockquote>
+<p><em>It is necessary to flag, that we made an attempt to contact support with this bug but, unfortunately, we were told that this was not a bug on their side, but our mistake, and I must prohibit the team from copy-pasting so this mistake won&rsquo;t repeat. <br> Copy-paste ban in 2023 lol</em></p>
+</blockquote>
+<p>Due to this and other imperfections of the platform (for example, the lack of an API for pulling a database from the platform), I decided that I needed to build an extension for Chrome. Firstly, it had to automate routine daily work with scripts, and secondly, the platform’s interface had to be modified so that not only I can catch the errors, poking around in the Chrome dev tool, but also any member of the team who builds bot could do it simply. Since I was the one developer on the team, I needed to make this extension with minimal effort, since there was no time for thoughtful development and I had to continue to deliver the whole scope of my usual tasks.</p>
+<p><br><h5>I divided the task into 2 stages:</h5></p>
+<ol>
+<li>Attribute verification. Insert a button into the interface and by clicking on it the attributes will be checked</li>
+<li>Automation of Analysis. Insert a button into the interface and by clicking on it the bot will be automatically analyzed and return to me CSV with this analysis.</li>
+</ol>
+<p><em>Little did I know, that at every stage new adventures await me.</em></p>
+<p>However, the impact of this extension was significant. It reduced the time spent on manual data analysis by 25% per month, increasing our team&rsquo;s productivity and data accuracy.</p>
+<p>This project was not just about technical execution; it was a journey of constant learning and adaptation. I navigated through unexpected challenges, from deciphering a complex GraphQL database to addressing cross-origin resource sharing (CORS) issues, each obstacle providing valuable insights into the intricacies of extension development and data handling.</p>
+<p>But let&rsquo;s dive deeper into each stage!</p>
+<br>
+<h3 id="stage-1-attribute-verification">Stage 1: Attribute verification</h3>
+<p>Previously, in order to check each attribute of the bot, you needed to click on an average of 6-7 pages and check the block with the attribute on each one. In this case, an error in an attribute can be either in its name or in its value.</p>
+<p><br><div style="position: relative; padding-bottom: 56.25%; overflow: hidden;">
+<iframe style="position: absolute; width: 100%; height: 100%;" src="/images/chrome_extension_p1.mp4" type="video/mp4" frameborder="0" allowfullscreen></iframe></p>
+</div>
+<p><br>Since I already knew where the attribute name and value are stored in the Chrome dev tool, and I needed to collect all the attributes for a specific block group (block group = 1 bot), I decided to try to pull them all using the API.</p>
+<p>Unfortunately, such request was not written by the platform developers and I had to write it myself. The platform used a GraphQL database and it is necessary to say, that there are GraphQL databases that are well-written and take the common sense into account, but this was not our case.</p>
+<p><br><img src="/images/this_is_fine.jpg" alt="image"></p>
+<p><br>After spending a couple of days learning how to write a request to the platform database, which began to be written when the company was a small service, but then they kept adding the new data in a random order, instead of rewriting it in a normal form, I managed to pull out all the bot attributes.</p>
+<p>After that, I started the front end part - added a button next to each group of blocks in the interface and wrapped everything in an extension.</p>
+<p>By clicking on the button, we send a request to the platform server with the block group id and receive a CSV table with the columns “block name”, “attribute name”, and “attribute value”. If there is a hidden character in the name or value of an attribute, you can easily notice this in the table, go to the desired block and correct the attribute. For all my colleagues to be able to use the extension, I take their User ID from the Chrome dev tool when they first launch the extension.</p>
+<p><br><div style="position: relative; padding-bottom: 56.25%; overflow: hidden;">
+<iframe style="position: absolute; width: 100%; height: 100%;" src="/images/chrome_extension_p2.mp4" type="video/mp4" frameborder="0" allowfullscreen></iframe></p>
+</div>
+<br>
+<br>
+<h3 id="stage-2-automation-of-analysis">Stage 2. Automation of analysis</h3>
+<p>Before I completed the first stage of my Chrome extension, bot analysis was the same Python script with classes and functions, to which I passed different attributes based on the bot that we sent to subscribers. This routine and unpleasant work took time, and besides, thanks to Stage 1 of the extension, I already had a ready CSV table with attributes, so it seemed to me that adding this feature should be easy.</p>
+<p><br><div style="width:70%;height:0;padding-bottom:57%;position:relative;">
+    <img src="https://media.giphy.com/media/ceeN6U57leAhi/source.gif" width="100%" height="100%" style="position:absolute" frameBorder="0">
+    </img>
+  </div>
+  <p><a href="https://giphy.com/gifs/ceeN6U57leAhi">via GIPHY</a></p></p>
+<p><br>To carry out data analysis, previously I needed to manually download the database from the platform since the platform did not have an API for these purposes. So you can imagine how much time you’ll spend if you have a database of 200K+ users, and you need to wait for a request to an overcomplicated GraphQL database to save this database (an assumption that in 2023 no one needs the data backups should be illegal).</p>
+<p>But to automate the analysis, I need to have a fresh database daily, and this database should be in the company’s storage and it should get there automatically.</p>
+<p>To solve this problem, I used the good old Chome dev tools and reverse engineering to write the request that would work. Then, I put this request into the Google Function, so it receives the latest database and sends it to our Google Cloud Storage. Also, I added a Google Scheduler, that triggers the Function every day at 7 am.</p>
+<p>When I thought about the architecture of this stage, I didn’t know that the main issue would wait for me at the end.</p>
+<p>On the front end side, I put a second button (next to the attribute collection button), by clicking on it the attributes are collected and sent to the script for analysis.</p>
+<p>On the backend side, the Python script should receive attributes, take the latest database backup from the Storage, conduct an analysis, and send an additional request to the platform to take the number of broadcast recipients from another part of its database (yes, unfortunately, this number doesn’t live in the main database) and collect the resulting analysis in a table, that should be familiar to stakeholders and the team and return the table in CSV form to the front end.</p>
+<p>I decided to deploy this Python script into Google Functions because it was familiar and convenient, plus it was a logical step to simplify working with our Cloud Storage. The adventure began when I realized that I could not send anything from the Google Extension to a function due to CORS restrictions.</p>
+<p><br><div style="width:70%;height:0;padding-bottom:57%;position:relative;">
+    <img src="https://media.giphy.com/media/cNZmQ1qfjIZa4Xr3VE/source.gif" width="100%" height="100%" style="position:absolute" frameBorder="0">
+    </img>
+  </div>
+  <p><a href="https://giphy.com/gifs/cNZmQ1qfjIZa4Xr3VE">via GIPHY</a></p></p>
+<p><br>I tried to Google and ChatGPT the issue and decided to use a background script, which operates and runs in a privileged context within the extension and is not subject to the same CORS restrictions as content scripts. To bridge the gap between the content script and the background script, I used <code>chrome.runtime.sendMessage</code>, which helps to secure communication between different parts of the extension, besides handling the HTTP requests and responses.</p>
+<p><br><img src="/images/schema.png" alt="image"></p>
+<h6>Final extension architecture</h6>
+<p><br><h5>The main insight here is that even with a lot of cool tools for data analysis and pipelines, we still have to reinvent the wheel.</h5></p>
+<p>p.s. Currently, I am exploring ways to scale this solution. I already built Version 2, adding the integration of real-time data syncing with our Looker Dashboard, further streamlining our workflow. This experience has been pivotal in my professional growth and I’m eager to apply all the skills and insights from it in future challenges.</p>
+
+          </article>
+        </div>
+      </div>
+      <div class="col-sm-12 col-md-12 col-lg-3">
+        <div class="sticky-sidebar">
+          
+          <aside class="toc">
+              <h5>
+                Table Of Contents
+              </h5>
+              <div class="toc-content">
+                <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#stage-1-attribute-verification">Stage 1: Attribute verification</a></li>
+        <li><a href="#stage-2-automation-of-analysis">Stage 2. Automation of analysis</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+              </div>
+          </aside>
+          
+
+          
+
+          
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-12 col-md-12 col-lg-9 p-4">
+        
+      </div>
+    </div>
+  </div>
+  <button class="p-2 px-3" onclick="topFunction()" id="topScroll">
+    <i class="fas fa-angle-up"></i>
+  </button>
+</section>
+
+
+<div class="progress">
+  <div id="scroll-progress-bar" class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+</div>
+<Script src="/js/scrollProgressBar.js"></script>
+
+
+<script>
+  var topScroll = document.getElementById("topScroll");
+  window.onscroll = function() {scrollFunction()};
+
+  function scrollFunction() {
+    if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+      topScroll.style.display = "block";
+    } else {
+      topScroll.style.display = "none";
+    }
+  }
+
+  function topFunction() {
+    document.body.scrollTop = 0;
+    document.documentElement.scrollTop = 0;
+  }
+</script>
+
+
+<script src="/js/readingTime.js"></script>
+
+
+
+  </div><footer>
+    
+ 
+
+<div class="text-center pt-2">
+    
+    <span class="px-1">
+        <a href="https://github.com/mariavyso" aria-label="github">
+            <svg xmlns="http://www.w3.org/2000/svg" width="2.7em" height="2.7em" viewBox="0 0 1792 1792">
+                <path
+                    d="M522 1352q-8 9-20-3-13-11-4-19 8-9 20 3 12 11 4 19zm-42-61q9 12 0 19-8 6-17-7t0-18q9-7 17 6zm-61-60q-5 7-13 2-10-5-7-12 3-5 13-2 10 5 7 12zm31 34q-6 7-16-3-9-11-2-16 6-6 16 3 9 11 2 16zm129 112q-4 12-19 6-17-4-13-15t19-7q16 5 13 16zm63 5q0 11-16 11-17 2-17-11 0-11 16-11 17-2 17 11zm58-10q2 10-14 14t-18-8 14-15q16-2 18 9zm964-956v960q0 119-84.5 203.5t-203.5 84.5h-224q-16 0-24.5-1t-19.5-5-16-14.5-5-27.5v-239q0-97-52-142 57-6 102.5-18t94-39 81-66.5 53-105 20.5-150.5q0-121-79-206 37-91-8-204-28-9-81 11t-92 44l-38 24q-93-26-192-26t-192 26q-16-11-42.5-27t-83.5-38.5-86-13.5q-44 113-7 204-79 85-79 206 0 85 20.5 150t52.5 105 80.5 67 94 39 102.5 18q-40 36-49 103-21 10-45 15t-57 5-65.5-21.5-55.5-62.5q-19-32-48.5-52t-49.5-24l-20-3q-21 0-29 4.5t-5 11.5 9 14 13 12l7 5q22 10 43.5 38t31.5 51l10 23q13 38 44 61.5t67 30 69.5 7 55.5-3.5l23-4q0 38 .5 103t.5 68q0 22-11 33.5t-22 13-33 1.5h-224q-119 0-203.5-84.5t-84.5-203.5v-960q0-119 84.5-203.5t203.5-84.5h960q119 0 203.5 84.5t84.5 203.5z" />
+
+                <metadata>
+                    <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+                        xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:dc="http://purl.org/dc/elements/1.1/">
+                        <rdf:Description about="https://iconscout.com/legal#licenses"
+                            dc:title="Github, Online, Project, Hosting, Square"
+                            dc:description="Github, Online, Project, Hosting, Square" dc:publisher="Iconscout"
+                            dc:date="2016-12-14" dc:format="image/svg+xml" dc:language="en">
+                            <dc:creator>
+                                <rdf:Bag>
+                                    <rdf:li>Font Awesome</rdf:li>
+                                </rdf:Bag>
+                            </dc:creator>
+                        </rdf:Description>
+                    </rdf:RDF>
+                </metadata>
+            </svg>
+        </a>
+    </span>
+    
+
+    
+    <span class="px-1">
+        <a href="https://www.linkedin.com/in/vysochina" aria-label="linkedin">
+            <svg xmlns="http://www.w3.org/2000/svg" width='2.4em' height='2.4em' fill="#fff" aria-label="LinkedIn"
+                viewBox="0 0 512 512">
+                <rect width="512" height="512" fill="#0077b5" rx="15%" />
+                <circle cx="142" cy="138" r="37" />
+                <path stroke="#fff" stroke-width="66" d="M244 194v198M142 194v198" />
+                <path d="M276 282c0-20 13-40 36-40 24 0 33 18 33 45v105h66V279c0-61-32-89-76-89-34 0-51 19-59 32" />
+            </svg>
+        </a>
+    </span>
+    
+
+    
+
+    
+
+    
+</div><div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-md-4 text-center">
+            <div class="pb-2">
+                <a href="https://mariavyso.github.io/" title="Mariia Vysochina">
+                    <img alt="Footer logo" src="/images/icon_1.png"
+                        height="40px" width="40px">
+                </a>
+            </div>
+            &copy; 2024  All rights reserved
+            <div class="text-secondary">
+                Made with
+                <span class="text-danger">
+                    &#10084;
+                </span>
+                and
+                <a href="https://github.com/gurusabarish/hugo-profile" target="_blank"
+                    title="Designed and developed by gurusabarish">
+                    Hugo Profile
+                </a>
+            </div>
+        </div>
+    </div>
+</div></footer><script src="/bootstrap-5/js/bootstrap.bundle.min.js"></script>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl)
+    })
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+  <section id="search-content" class="py-2">
+    <div class="container" id="search-results"></div>
+  </section>
+</body>
+
+</html>

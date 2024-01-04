@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html>
+
+<head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta http-equiv="Accept-CH" content="DPR, Viewport-Width, Width">
+<link rel="icon" href=/images/icon_1.png type="image/gif">
+
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload"
+      as="style"
+      href="https://fonts.googleapis.com/css2?family=Alata&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+>
+<link rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Alata&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+      media="print" onload="this.media='all'" />
+<noscript>
+  <link
+          href="https://fonts.googleapis.com/css2?family=Alata&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+          rel="stylesheet">
+</noscript>
+
+
+<link rel="stylesheet" href="/css/font.css" media="all">
+
+
+
+<meta property="og:title" content="Journaling App" />
+<meta property="og:description" content="Summary: This is the story of how I built a voice-to-text journaling app. Starting from a need to keep up with my thoughts, this project pushed my limits. I tackled tech choices, solved tricky problems, and learned loads – especially about keeping things simple and user-focused. Big learning curve, bigger rewards! Tools, I leaned on: Expo, WhisperAI API, GCP.
+The code for this project is here!
+Have you ever felt like your thoughts are racing faster than your hands can write them down?" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://mariavyso.github.io/posts/journaling_app/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2023-11-06T16:26:41-08:00" />
+<meta property="article:modified_time" content="2023-11-06T16:26:41-08:00" /><meta property="og:site_name" content=" " />
+
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Journaling App"/>
+<meta name="twitter:description" content="Summary: This is the story of how I built a voice-to-text journaling app. Starting from a need to keep up with my thoughts, this project pushed my limits. I tackled tech choices, solved tricky problems, and learned loads – especially about keeping things simple and user-focused. Big learning curve, bigger rewards! Tools, I leaned on: Expo, WhisperAI API, GCP.
+The code for this project is here!
+Have you ever felt like your thoughts are racing faster than your hands can write them down?"/>
+
+
+<link rel="stylesheet" href="/bootstrap-5/css/bootstrap.min.css" media="all"><link rel="stylesheet" href="/css/header.css" media="all">
+<link rel="stylesheet" href="/css/footer.css" media="all">
+
+
+<link rel="stylesheet" href="/css/theme.css" media="all">
+
+
+
+<link rel="stylesheet" href="/style.css">
+
+
+<style>
+    :root {
+        --text-color: #F5F5F5;
+        --text-secondary-color: #F5F5F5;
+        --background-color: #313552;
+        --secondary-background-color: #64ffda1a;
+        --primary-color: #F1E0AC;
+        --secondary-color: #30475E;
+
+         
+        --text-color-dark: #e4e6eb;
+        --text-secondary-color-dark: #b0b3b8;
+        --background-color-dark: #18191a;
+        --secondary-background-color-dark: #212529;
+        --primary-color-dark: #ffffff;
+        --secondary-color-dark: #212529;
+    }
+    body {
+        font-size: 1rem;
+        font-weight: 400;
+        line-height: 1.5;
+        text-align: left;
+    }
+
+    html {
+        background-color: var(--background-color) !important;
+    }
+
+    body::-webkit-scrollbar {
+        width: .5em;
+        height: .5em;
+        background-color: var(--background-color);
+    }
+    
+    ::-webkit-scrollbar-track {
+        box-shadow: inset 0 0 6px var(--background-color);
+        border-radius: 1rem;
+    }
+    
+    ::-webkit-scrollbar-thumb {
+        border-radius: 1rem;
+        background-color: var(--secondary-color);
+        outline: 1px solid var(--background-color);
+    }
+
+    #search-content::-webkit-scrollbar {
+        width: .5em;
+        height: .1em;
+        background-color: var(--background-color);
+    }
+</style>
+
+<meta name="description" content="">
+<link rel="stylesheet" href="/css/single.css">
+
+
+<script defer src="/fontawesome-5/all-5.15.4.js"></script>
+
+  <title>
+Journaling App | Mariia Vysochina
+
+  </title>
+</head>
+
+<body class="light">
+  
+  
+<script>
+    let localStorageValue = localStorage.getItem("pref-theme");
+    let mediaQuery = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+    switch (localStorageValue) {
+        case "dark":
+            document.body.classList.add('dark');
+            break;
+        case "light":
+            document.body.classList.remove('dark');
+            break;
+        default:
+            if (mediaQuery) {
+                document.body.classList.add('dark');
+            }
+            break;
+    }
+</script>
+
+
+
+<header>
+    <nav class="pt-3 navbar navbar-expand-lg animate">
+        <div class="container-fluid mx-xs-2 mx-sm-5 mx-md-5 mx-lg-5">
+            
+            <a class="navbar-brand primary-font text-wrap" href="/">
+                
+                <img src="/images/icon_1.png" width="30" height="30"
+                    class="d-inline-block align-top">
+                 
+                
+            </a>
+
+            
+
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent"
+                aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+                <svg aria-hidden="true" height="24" viewBox="0 0 16 16" version="1.1" width="24" data-view-component="true">
+                    <path fill-rule="evenodd" d="M1 2.75A.75.75 0 011.75 2h12.5a.75.75 0 110 1.5H1.75A.75.75 0 011 2.75zm0 5A.75.75 0 011.75 7h12.5a.75.75 0 110 1.5H1.75A.75.75 0 011 7.75zM1.75 12a.75.75 0 100 1.5h12.5a.75.75 0 100-1.5H1.75z"></path>
+                </svg>
+            </button>
+
+            
+            <div class="collapse navbar-collapse text-wrap primary-font" id="navbarContent">
+                <ul class="navbar-nav ms-auto text-center">
+                    
+
+                    
+
+                    
+                    <li class="nav-item navbar-text">
+                        <a class="nav-link" href="/#experience"
+                            aria-label="experience">
+                            Experience
+                        </a>
+                    </li>
+                    
+
+                    
+                    <li class="nav-item navbar-text">
+                        <a class="nav-link" href="/#projects"
+                            aria-label="projects">
+                            Projects
+                        </a>
+                    </li>
+                    
+
+                    
+                    <li class="nav-item navbar-text">
+                        <a class="nav-link" href="/#education"
+                            aria-label="education">
+                            Education
+                        </a>
+                    </li>
+                    
+
+
+                    
+
+                    
+                    <li class="nav-item navbar-text">
+                        <a class="nav-link" href="/#contact"
+                            aria-label="contact">
+                            Contact
+                        </a>
+                    </li>
+                    
+
+                    
+                    
+                    
+                    
+                    <li class="nav-item navbar-text">
+                        <a class="nav-link" href="" title="">
+                            
+                            
+                        </a>
+                    </li>
+                    
+                    
+                    
+                    
+                    <li class="nav-item navbar-text">
+                        <a class="nav-link" href="" title="">
+                            
+                            
+                        </a>
+                    </li>
+                    
+                    
+
+                    
+                    <li class="nav-item navbar-text">
+                        
+                        <div class="text-center">
+                            <button id="theme-toggle">
+                                <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                                </svg>
+                                <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="5"></circle>
+                                    <line x1="12" y1="1" x2="12" y2="3"></line>
+                                    <line x1="12" y1="21" x2="12" y2="23"></line>
+                                    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                                    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                                    <line x1="1" y1="12" x2="3" y2="12"></line>
+                                    <line x1="21" y1="12" x2="23" y2="12"></line>
+                                    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                                    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                                </svg>
+                            </button>
+                        </div>
+                    </li>
+                    
+
+                </ul>
+
+            </div>
+        </div>
+    </nav>
+</header>
+<div id="content">
+<section id="single">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-sm-12 col-md-12 col-lg-9">
+        <div class="pr-lg-4">
+          <div class="title mb-5">
+            <h1 class="text-center mb-4">Journaling App</h1>
+            <div class="text-center">
+               
+              <small>|</small>
+              Nov 6, 2023
+
+              
+              <span id="readingTime">
+                min read
+              </span>
+              
+            </div>
+          </div>
+          
+          <article class="page-content  p-2">
+          <h5>Summary: <br>This is the story of how I built a voice-to-text journaling app. Starting from a need to keep up with my thoughts, this project pushed my limits. I tackled tech choices, solved tricky problems, and learned loads – especially about keeping things simple and user-focused. Big learning curve, bigger rewards! </h5>
+<p><br><strong>Tools, I leaned on:</strong> Expo, WhisperAI API, GCP.</p>
+<p><br>The code for this project is <a href="https://github.com/mariavyso/journaling_app">here</a>!</p>
+<hr>
+<p><br>Have you ever felt like your thoughts are racing faster than your hands can write them down? As a Junior Software Engineer and a self-proclaimed journaling enthusiast, this was a constant struggle for me. That&rsquo;s where my journey with this voice-to-text journaling app began.</p>
+<p>It all started with a simple yet intriguing challenge from my therapist: to explore journaling as a tool for self-discovery. In 2023, pen and paper seem archaic, but there&rsquo;s something about writing down your thoughts that feels deeply personal. However, when my hand was cramped from trying to keep pace with my thoughts, I knew there had to be a better way. So I had an idea to create an app that could transcribe my monologue into written text and send it to the document with a timestamp, so I could go back and re-read it if I wanted.</p>
+<p>I was aware of existing apps that offered similar features, but as someone with a product management background, the passion for crafting something tailored to my needs was irresistible. Plus, it was the perfect project to improve my skills and learn something new.</p>
+<h3 id="little-roadmap">Little Roadmap</h3>
+<p>I decided to break the task into 4 phases:</p>
+<ol>
+<li>Outline the application’s core functions (1 Day)</li>
+<li>Research of the technologies (3 Day)</li>
+<li>Build an MVP (5 days)</li>
+<li>Finalizing the product (5 days)</li>
+</ol>
+<p>To manage myself more effectively I added the approximate number of days that I planned to spend on each step, given that I have a full-time job.</p>
+<p><br><div style="width:70%;height:0;padding-bottom:57%;position:relative;">
+    <img src="https://media.giphy.com/media/toXKzaJP3WIgM/source.gif" width="100%" height="100%" style="position:absolute" frameBorder="0">
+    </img>
+  </div>
+  <p><a href="https://giphy.com/gifs/toXKzaJP3WIgM">via GIPHY</a></p></p>
+<br>
+<h3 id="phase-1-core-functions-of-the-product">Phase 1. Core functions of the product</h3>
+<p>I was thinking about something simple, yet effective and decided on these functions:</p>
+<ul>
+<li><strong>Frontend:</strong> A button to start/stop audio recording and a timer.</li>
+<li><strong>Backend:</strong> Audio recording, transcription, and text integration into a document.</li>
+</ul>
+<br>
+<h3 id="phase-2-research-of-the-technologies">Phase 2. Research of the technologies</h3>
+<p>I started my research with the frontend part since my experience in interface programming was limited to the Chrome extension (insert link to post). Fortunately, I have friends who have experience in mobile development and after a couple of interviews and googling, I decided to write a naive application, using the open-source platform Expo.</p>
+<p>For the backend part, I found two options for easy audio transcription:</p>
+<ol>
+<li>Google Cloud Speech-to-text API</li>
+<li>WhisperAI API from OpenAI</li>
+</ol>
+<p>After testing, WhisperAI emerged as the winner for its accuracy and cost-effectiveness.</p>
+<p>Since the project was intended for personal use only, for the final step, I decided to use a Google Documents.</p>
+<p>At this step, I tried to run a quick test of the product, starting with the backend, since I have more experience in this area. Everything went quite successfully here. I recorded a couple of audio to test the script, transcribed them using the WhisperAI API, and sent the text to Google document.</p>
+<p>Testing the frontend part was also quite easy - I had a button to turn the audio recording on and off and I could use Expo to record and then I could play this audio on my device.</p>
+<p>At this step, it seemed to me that everything was quite simple and I needed a couple more days to assemble a full-fledged MVP.</p>
+<br>
+<h3 id="phase-3-the-mvp-challenge">Phase 3. The MVP Challenge</h3>
+<p>This phase was a rollercoaster.</p>
+<p>Inspired by the success of those quick tests, I started with the frontend and wrote the code for the button, that turns the audio recording on and off and added the timer so I could see the duration of my record on the screen. (It was not fast, after this experience I no longer joke about the frontend)
+For the backend, I decided that it would be great to store my audio recordings in the Google Storage Bucket and wrote a Google function that would be triggered by the new audio, that appeared in the bucket.</p>
+<p>But here I met an issue with the audio format and it turned out that Expo records audio in CAF format by default, and even if I specify MP3 in the recording settings, the WhisperAI API does not understand this format. So I added the ffmpeg library for audio reformatting. This helped, but a new issue arose.</p>
+<p>As it turns out, to send audio from Expo to the Google bucket, I need to either generate a token manually on the Google side and constantly update it, or register the application and configure it as a real app, which was not part of my plans either for the MVP nor for the real product. I was okay with having the app available through Expo Go and not having it in the Apple store ($99 per year and ongoing support of the app for other people wasn&rsquo;t on my wishlist).</p>
+<p>I left this question for step 4, which means that for now, I needed to copy the token and paste it to the Expo manually. The rest of the app worked well, the Google function triggered as soon as new audio appeared in the bucket, the WhisperAI API transcribed the text, and the text was inserted into the document, I was happy.</p>
+<br>
+<h3 id="phase-4-crucial-pivot-and-finalizing-the-product">Phase 4. Crucial pivot and finalizing the product</h3>
+<p>To solve the problem of generating a token, I turned to my mentor, who, by luck, is a senior software engineer. He suggested two options for solving the problem:</p>
+<ol>
+<li>Rewrite the code so that audio is sent from Expo to the Google function via an HTTP request.</li>
+<li>Try to generate a new JWT token inside of the Expo.</li>
+</ol>
+<p>Of course, I didn’t want to destroy my setup in Google Cloud, which I considered a genius and met my requirements, so I chose option 2 - generating a token and authentication inside Expo.</p>
+<p>As it turned out, this was challenging, because we have a ton of libraries in Python and JS for JWT signature generation, but somehow JS libraries didn’t work in my case.
+<br>
+My mentor became interested in solving this issue and offered some help with this and wrote a code that works for Expo and Google and I was over the moon because it finally worked.</p>
+<p>After a couple of days of using the application for its intended purpose, I realized that after each click on the stop recording button I used to go and check the Google document to see if the audio transcript had been loaded into it. This was not convenient and I decided that I needed to display a message on the screen as soon as new text was loaded.</p>
+<p>But for incorporating this feature, It turned out that I needed one more authentication, and guess what I had to do&hellip;</p>
+<br>
+<div style="width:70%;height:0;padding-bottom:57%;position:relative;">
+    <img src="https://media.giphy.com/media/GZLf5Njk1KGwU/source.gif" width="100%" height="100%" style="position:absolute" frameBorder="0">
+    </img>
+  </div>
+  <p><a href="https://giphy.com/gifs/GZLf5Njk1KGwU">via GIPHY</a></p>
+<br>
+<p>This led to a crucial pivot: instead of storing audio, I decided to send it directly to the backend for processing. A challenging decision, but it streamlined the app and reduced complexity. Well, that is, I returned to the first option that my mentor suggested.</p>
+<p>This brought enormous benefits, because now I know that <del>I need to listen to adults</del>, I need to think in advance about the functionality that would be nice to have, and review other people’s projects to understand what I need to bring into my own one.</p>
+<p>After several iterations and incorporating a feature to notify users once their journal entry is ready, the app transformed from a personal tool into something I believe could benefit others. Here&rsquo;s a sneak peek at the app in action:</p>
+<p><strong>Video of using the app is still in production, but it will be there soon</strong></p>
+<h5>Throughout this journey, the learning curve was steep, but the personal and professional growth I experienced was immeasurable. I can say, that I became better at problem-solving, and broadened my technical skill set. Working with my mentor and seeking advice from peers in mobile development were crucial in allowing me to see my project from a different perspective. I had many hours of frustration and doubt, but overcoming these barriers was fulfilling.</h5>
+
+          </article>
+        </div>
+      </div>
+      <div class="col-sm-12 col-md-12 col-lg-3">
+        <div class="sticky-sidebar">
+          
+          <aside class="toc">
+              <h5>
+                Table Of Contents
+              </h5>
+              <div class="toc-content">
+                <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#little-roadmap">Little Roadmap</a></li>
+        <li><a href="#phase-1-core-functions-of-the-product">Phase 1. Core functions of the product</a></li>
+        <li><a href="#phase-2-research-of-the-technologies">Phase 2. Research of the technologies</a></li>
+        <li><a href="#phase-3-the-mvp-challenge">Phase 3. The MVP Challenge</a></li>
+        <li><a href="#phase-4-crucial-pivot-and-finalizing-the-product">Phase 4. Crucial pivot and finalizing the product</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+              </div>
+          </aside>
+          
+
+          
+
+          
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-12 col-md-12 col-lg-9 p-4">
+        
+      </div>
+    </div>
+  </div>
+  <button class="p-2 px-3" onclick="topFunction()" id="topScroll">
+    <i class="fas fa-angle-up"></i>
+  </button>
+</section>
+
+
+<div class="progress">
+  <div id="scroll-progress-bar" class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+</div>
+<Script src="/js/scrollProgressBar.js"></script>
+
+
+<script>
+  var topScroll = document.getElementById("topScroll");
+  window.onscroll = function() {scrollFunction()};
+
+  function scrollFunction() {
+    if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+      topScroll.style.display = "block";
+    } else {
+      topScroll.style.display = "none";
+    }
+  }
+
+  function topFunction() {
+    document.body.scrollTop = 0;
+    document.documentElement.scrollTop = 0;
+  }
+</script>
+
+
+<script src="/js/readingTime.js"></script>
+
+
+
+  </div><footer>
+    
+ 
+
+<div class="text-center pt-2">
+    
+    <span class="px-1">
+        <a href="https://github.com/mariavyso" aria-label="github">
+            <svg xmlns="http://www.w3.org/2000/svg" width="2.7em" height="2.7em" viewBox="0 0 1792 1792">
+                <path
+                    d="M522 1352q-8 9-20-3-13-11-4-19 8-9 20 3 12 11 4 19zm-42-61q9 12 0 19-8 6-17-7t0-18q9-7 17 6zm-61-60q-5 7-13 2-10-5-7-12 3-5 13-2 10 5 7 12zm31 34q-6 7-16-3-9-11-2-16 6-6 16 3 9 11 2 16zm129 112q-4 12-19 6-17-4-13-15t19-7q16 5 13 16zm63 5q0 11-16 11-17 2-17-11 0-11 16-11 17-2 17 11zm58-10q2 10-14 14t-18-8 14-15q16-2 18 9zm964-956v960q0 119-84.5 203.5t-203.5 84.5h-224q-16 0-24.5-1t-19.5-5-16-14.5-5-27.5v-239q0-97-52-142 57-6 102.5-18t94-39 81-66.5 53-105 20.5-150.5q0-121-79-206 37-91-8-204-28-9-81 11t-92 44l-38 24q-93-26-192-26t-192 26q-16-11-42.5-27t-83.5-38.5-86-13.5q-44 113-7 204-79 85-79 206 0 85 20.5 150t52.5 105 80.5 67 94 39 102.5 18q-40 36-49 103-21 10-45 15t-57 5-65.5-21.5-55.5-62.5q-19-32-48.5-52t-49.5-24l-20-3q-21 0-29 4.5t-5 11.5 9 14 13 12l7 5q22 10 43.5 38t31.5 51l10 23q13 38 44 61.5t67 30 69.5 7 55.5-3.5l23-4q0 38 .5 103t.5 68q0 22-11 33.5t-22 13-33 1.5h-224q-119 0-203.5-84.5t-84.5-203.5v-960q0-119 84.5-203.5t203.5-84.5h960q119 0 203.5 84.5t84.5 203.5z" />
+
+                <metadata>
+                    <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+                        xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:dc="http://purl.org/dc/elements/1.1/">
+                        <rdf:Description about="https://iconscout.com/legal#licenses"
+                            dc:title="Github, Online, Project, Hosting, Square"
+                            dc:description="Github, Online, Project, Hosting, Square" dc:publisher="Iconscout"
+                            dc:date="2016-12-14" dc:format="image/svg+xml" dc:language="en">
+                            <dc:creator>
+                                <rdf:Bag>
+                                    <rdf:li>Font Awesome</rdf:li>
+                                </rdf:Bag>
+                            </dc:creator>
+                        </rdf:Description>
+                    </rdf:RDF>
+                </metadata>
+            </svg>
+        </a>
+    </span>
+    
+
+    
+    <span class="px-1">
+        <a href="https://www.linkedin.com/in/vysochina" aria-label="linkedin">
+            <svg xmlns="http://www.w3.org/2000/svg" width='2.4em' height='2.4em' fill="#fff" aria-label="LinkedIn"
+                viewBox="0 0 512 512">
+                <rect width="512" height="512" fill="#0077b5" rx="15%" />
+                <circle cx="142" cy="138" r="37" />
+                <path stroke="#fff" stroke-width="66" d="M244 194v198M142 194v198" />
+                <path d="M276 282c0-20 13-40 36-40 24 0 33 18 33 45v105h66V279c0-61-32-89-76-89-34 0-51 19-59 32" />
+            </svg>
+        </a>
+    </span>
+    
+
+    
+
+    
+
+    
+</div><div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-md-4 text-center">
+            <div class="pb-2">
+                <a href="https://mariavyso.github.io/" title="Mariia Vysochina">
+                    <img alt="Footer logo" src="/images/icon_1.png"
+                        height="40px" width="40px">
+                </a>
+            </div>
+            &copy; 2024  All rights reserved
+            <div class="text-secondary">
+                Made with
+                <span class="text-danger">
+                    &#10084;
+                </span>
+                and
+                <a href="https://github.com/gurusabarish/hugo-profile" target="_blank"
+                    title="Designed and developed by gurusabarish">
+                    Hugo Profile
+                </a>
+            </div>
+        </div>
+    </div>
+</div></footer><script src="/bootstrap-5/js/bootstrap.bundle.min.js"></script>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl)
+    })
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+  <section id="search-content" class="py-2">
+    <div class="container" id="search-results"></div>
+  </section>
+</body>
+
+</html>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Mariia Vysochina</title>
+    <link>https://mariavyso.github.io/</link>
+    <description>Recent content on Mariia Vysochina</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 06 Nov 2023 16:26:41 -0800</lastBuildDate>
+    <atom:link href="https://mariavyso.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Journaling App</title>
+      <link>https://mariavyso.github.io/posts/journaling_app/</link>
+      <pubDate>Mon, 06 Nov 2023 16:26:41 -0800</pubDate>
+      <guid>https://mariavyso.github.io/posts/journaling_app/</guid>
+      <description>Summary: This is the story of how I built a voice-to-text journaling app. Starting from a need to keep up with my thoughts, this project pushed my limits. I tackled tech choices, solved tricky problems, and learned loads – especially about keeping things simple and user-focused. Big learning curve, bigger rewards! Tools, I leaned on: Expo, WhisperAI API, GCP.
+The code for this project is here!
+Have you ever felt like your thoughts are racing faster than your hands can write them down?</description>
+    </item>
+    <item>
+      <title>Chrome Extension</title>
+      <link>https://mariavyso.github.io/posts/chrome_extension/</link>
+      <pubDate>Sat, 17 Jun 2023 16:26:41 -0800</pubDate>
+      <guid>https://mariavyso.github.io/posts/chrome_extension/</guid>
+      <description>Summary: This is a real-life case study about one of my work projects. Facing inefficiencies and limitations of the no-code tool we used, I built a Chrome extension to streamline our data analysis process and enhance error detection. This tool reduces the time we spend on manual data checks and analysis by 25% per month, significantly boosting team productivity. Tools, I leaned on: JS, Python, GCP.
+Working in a small non-profit in a fast-paced environment usually puts you in a place where you need to choose between using an overpriced technical tool or a cheap tool.</description>
+    </item>
+    <item>
+      <title>Postcode bot</title>
+      <link>https://mariavyso.github.io/posts/postcode_bot/</link>
+      <pubDate>Sat, 17 Sep 2022 16:26:41 -0800</pubDate>
+      <guid>https://mariavyso.github.io/posts/postcode_bot/</guid>
+      <description>Summary: This is a real-life case study about how I built a Telegram bot with Python for a startup, diving into asynchronous programming and learning a ton along the way. The bot was used as a prototype for validating a startup&#39;s hypothesis. Tools, I leaned on: BigQuery, Heroku, and the patience of my senior software-engineer mentor.
+I have a passion for helping startups. Once, I worked with a company, that wanted to build a platform, that used users’ input of zip code to show social, demographic, and economic data about this area.</description>
+    </item>
+  </channel>
+</rss>
