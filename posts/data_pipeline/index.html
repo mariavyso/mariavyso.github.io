@@ -288,74 +288,43 @@ Airflow Data Pipeline | Mariia Vysochina
 <hr>
 <p><br>During the summer 2024 Data Engineering BootCamp, I had the opportunity to tackle a challenging problem that I face in my current role. This project was not only a learning experience but also a practical solution to streamline the messy and manual process of handling raw Chatfuel data.</p>
 <br>
-<h3 id="stage-1-attribute-verification">Stage 1: Attribute verification</h3>
-<p>Previously, in order to check each attribute of the bot, you needed to click on an average of 6-7 pages and check the block with the attribute on each one. In this case, an error in an attribute can be either in its name or in its value.</p>
-<p><br><div style="position: relative; padding-bottom: 56.25%; overflow: hidden;">
-<iframe style="position: absolute; width: 100%; height: 100%;" src="/images/chrome_extension_p1.mp4" type="video/mp4" frameborder="0" allowfullscreen></iframe></p>
-</div>
-<p><br>Since I already knew where the attribute name and value are stored in the Chrome dev tool, and I needed to collect all the attributes for a specific block group (block group = 1 bot), I decided to try to pull them all using the API.</p>
-<p>Unfortunately, such request was not written by the platform developers and I had to write it myself. The platform used a GraphQL database and it is necessary to say, that there are GraphQL databases that are well-written and take the common sense into account, but this was not our case.</p>
-<p><br><img src="/images/this_is_fine.jpg" alt="image"></p>
-<p><br>After spending a couple of days learning how to write a request to the platform database, which began to be written when the company was a small service, but then they kept adding the new data in a random order, instead of rewriting it in a normal form, I managed to pull out all the bot attributes.</p>
-<p>After that, I started the front end part - added a button next to each group of blocks in the interface and wrapped everything in an extension.</p>
-<p>By clicking on the button, we send a request to the platform server with the block group id and receive a CSV table with the columns “block name”, “attribute name”, and “attribute value”. If there is a hidden character in the name or value of an attribute, you can easily notice this in the table, go to the desired block and correct the attribute. For all my colleagues to be able to use the extension, I take their User ID from the Chrome dev tool when they first launch the extension.</p>
-<p><br><div style="position: relative; padding-bottom: 56.25%; overflow: hidden;">
-<iframe style="position: absolute; width: 100%; height: 100%;" src="/images/chrome_extension_p2.mp4" type="video/mp4" frameborder="0" allowfullscreen></iframe></p>
-</div>
+<p><br><strong>Key Highlights:</strong>
+    <br>
+    <br>
+1. Advanced Data Extraction:
+<br>
+Without any public documentation, I had to reverse-engineer Chatfuel’s GraphQL API. This involved navigating through a dynamic data structure where the number of attributes could exceed 1700 and constantly change. This challenge pushed me to develop a flexible method that could automatically detect and adapt to new data fields, ensuring comprehensive data capture.
 <br>
 <br>
-<h3 id="stage-2-automation-of-analysis">Stage 2. Automation of analysis</h3>
-<p>Before I completed the first stage of my Chrome extension, bot analysis was the same Python script with classes and functions, to which I passed different attributes based on the bot that we sent to subscribers. This routine and unpleasant work took time, and besides, thanks to Stage 1 of the extension, I already had a ready CSV table with attributes, so it seemed to me that adding this feature should be easy.</p>
-<p><br><div style="width:70%;height:0;padding-bottom:57%;position:relative;">
-    <img src="https://media.giphy.com/media/ceeN6U57leAhi/source.gif" width="100%" height="100%" style="position:absolute" frameBorder="0">
-    </img>
-  </div>
-  <p><a href="https://giphy.com/gifs/ceeN6U57leAhi">via GIPHY</a></p></p>
-<p><br>To carry out data analysis, previously I needed to manually download the database from the platform since the platform did not have an API for these purposes. So you can imagine how much time you’ll spend if you have a database of 200K+ users, and you need to wait for a request to an overcomplicated GraphQL database to save this database (an assumption that in 2023 no one needs the data backups should be illegal).</p>
-<p>But to automate the analysis, I need to have a fresh database daily, and this database should be in the company’s storage and it should get there automatically.</p>
-<p>To solve this problem, I used the good old Chome dev tools and reverse engineering to write the request that would work. Then, I put this request into the Google Function, so it receives the latest database and sends it to our Google Cloud Storage. Also, I added a Google Scheduler, that triggers the Function every day at 7 am.</p>
-<p>When I thought about the architecture of this stage, I didn’t know that the main issue would wait for me at the end.</p>
-<p>On the front end side, I put a second button (next to the attribute collection button), by clicking on it the attributes are collected and sent to the script for analysis.</p>
-<p>On the backend side, the Python script should receive attributes, take the latest database backup from the Storage, conduct an analysis, and send an additional request to the platform to take the number of broadcast recipients from another part of its database (yes, unfortunately, this number doesn’t live in the main database) and collect the resulting analysis in a table, that should be familiar to stakeholders and the team and return the table in CSV form to the front end.</p>
-<p>I decided to deploy this Python script into Google Functions because it was familiar and convenient, plus it was a logical step to simplify working with our Cloud Storage. The adventure began when I realized that I could not send anything from the Google Extension to a function due to CORS restrictions.</p>
-<p><br><div style="width:70%;height:0;padding-bottom:57%;position:relative;">
-    <img src="https://media.giphy.com/media/cNZmQ1qfjIZa4Xr3VE/source.gif" width="100%" height="100%" style="position:absolute" frameBorder="0">
-    </img>
-  </div>
-  <p><a href="https://giphy.com/gifs/cNZmQ1qfjIZa4Xr3VE">via GIPHY</a></p></p>
-<p><br>I tried to Google and ChatGPT the issue and decided to use a background script, which operates and runs in a privileged context within the extension and is not subject to the same CORS restrictions as content scripts. To bridge the gap between the content script and the background script, I used <code>chrome.runtime.sendMessage</code>, which helps to secure communication between different parts of the extension, besides handling the HTTP requests and responses.</p>
-<p><br><img src="/images/schema.png" alt="image"></p>
-<h6>Final extension architecture</h6>
-<p><br><h5>The main insight here is that even with a lot of cool tools for data analysis and pipelines, we still have to reinvent the wheel.</h5></p>
-<p>p.s. Currently, I am exploring ways to scale this solution. I already built Version 2, adding the integration of real-time data syncing with our Looker Dashboard, further streamlining our workflow. This experience has been pivotal in my professional growth and I’m eager to apply all the skills and insights from it in future challenges.</p>
+2. Simulating Event-Based Data:
+<br>
+Chatfuel’s architecture doesn’t naturally support event tracking. To overcome this, I implemented a novel approach by taking periodic snapshots of user data. By doing so, I simulated an event-based system where each data pull serves as a historical record, allowing for detailed analysis of user behavior over time. This creative workaround has made it possible to conduct trend analysis that was previously unachievable with the native data.
+<br>
+<br>
+3. Robust Transformation Pipeline with DBT and BigQuery:
+<br>
+Once the raw data was ingested, I leveraged DBT in BigQuery to perform incremental transformations. This setup not only ensured that new or updated data was seamlessly integrated but also maintained a complete historical record. I implemented merge strategies and post-processing hooks to keep the data consistent and up-to-date.
+<br>
+<br>
+4. Automation and Orchestration with Airflow:
+<br>
+To tie everything together, I used Airflow to orchestrate the entire pipeline. This automation covers data collection, transformation, and even error handling. The system is scheduled to run daily, providing stakeholders with timely, actionable insights through a Looker dashboard that visualizes key performance indicators and trends.
+<br>
+<br>
+5. Real-World Application:
+<br>
+At my current job, I encounter operational challenges with manual data handling and outdated systems. This project directly addresses these issues by automating complex data workflows, reducing manual intervention, and enabling real-time analysis. The insights generated from this pipeline empower decision-makers to act quickly and confidently.
+<br>
+For a more detailed description of the project’s architecture, transformation steps, and the code itself, you can dive into the repository on <a href="https://github.com/mariavyso/dataexpert_capstone_project">GitHub</a>.
+
+This project stands as a testament to the innovative approaches fostered during the BootCamp and my commitment to solving real-world challenges through effective data engineering.
+
 
           </article>
         </div>
       </div>
       <div class="col-sm-12 col-md-12 col-lg-3">
-        <div class="sticky-sidebar">
-
-          <aside class="toc">
-              <h5>
-                Table Of Contents
-              </h5>
-              <div class="toc-content">
-                <nav id="TableOfContents">
-  <ul>
-    <li>
-      <ul>
-        <li><a href="#stage-1-attribute-verification">Stage 1: Attribute verification</a></li>
-        <li><a href="#stage-2-automation-of-analysis">Stage 2. Automation of analysis</a></li>
-      </ul>
-    </li>
-  </ul>
-</nav>
-              </div>
-          </aside>
-
-
-
-
+        <div class="sticky-sidebar"></div>
 
         </div>
       </div>
@@ -461,7 +430,7 @@ Airflow Data Pipeline | Mariia Vysochina
                         height="40px" width="40px">
                 </a>
             </div>
-            &copy; 2024  All rights reserved
+            &copy; 2025  All rights reserved
             <div class="text-secondary">
                 Made with
                 <span class="text-danger">
