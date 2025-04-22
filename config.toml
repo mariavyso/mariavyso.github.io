@@ -4,6 +4,10 @@ title = 'Mariia Vysochina'
 theme = "not-much"
 copyright = "© {year}"
 
+[caches]
+  [caches.images]
+    dir = ':cacheDir/images'
+
 
 [markup]
   [markup.highlight]
