@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>JS on Mariia Vysochina</title>
+    <link>http://localhost:1313/tags/js/</link>
+    <description>Recent content in JS on Mariia Vysochina</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <copyright>© {year}</copyright>
+    <lastBuildDate>Mon, 06 Nov 2023 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/js/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>ChatFuel Chrome Extension. Work Project.</title>
+      <link>http://localhost:1313/posts/cf_chrome_extension/</link>
+      <pubDate>Mon, 06 Nov 2023 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/cf_chrome_extension/</guid>
+      <description>This is a real-life case study about one of my work projects. Facing inefficiencies and limitations of the no-code tool we used, I built a Chrome extension to streamline our data analysis process and enhance error detection.</description>
+    </item>
+  </channel>
+</rss>

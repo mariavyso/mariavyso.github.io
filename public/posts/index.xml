@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Posts on Mariia Vysochina</title>
+    <link>http://localhost:1313/posts/</link>
+    <description>Recent content in Posts on Mariia Vysochina</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <copyright>© {year}</copyright>
+    <lastBuildDate>Sun, 20 Apr 2025 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>DIY 3d printed handbag. Pet Project.</title>
+      <link>http://localhost:1313/posts/diy_handbag/</link>
+      <pubDate>Sun, 20 Apr 2025 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/diy_handbag/</guid>
+      <description>How I turned a fantasy into a custom 3D‑printed anatomical heart handbag. Navigating CAD tools, prototyping with different materials, and learning as I go.</description>
+    </item>
+    <item>
+      <title>Data Pipeline with Airflow and Docker. Work Project.</title>
+      <link>http://localhost:1313/posts/pipeline_airflow_docker/</link>
+      <pubDate>Sun, 15 Dec 2024 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/pipeline_airflow_docker/</guid>
+      <description>This project directly addresses a real-life challenge I encountered in my current role - automating the data pipeline to efficiently process and transform raw Chatfuel data.</description>
+    </item>
+    <item>
+      <title>ChatFuel Chrome Extension. Work Project.</title>
+      <link>http://localhost:1313/posts/cf_chrome_extension/</link>
+      <pubDate>Mon, 06 Nov 2023 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/cf_chrome_extension/</guid>
+      <description>This is a real-life case study about one of my work projects. Facing inefficiencies and limitations of the no-code tool we used, I built a Chrome extension to streamline our data analysis process and enhance error detection.</description>
+    </item>
+    <item>
+      <title>Journaling App. Pet project.</title>
+      <link>http://localhost:1313/posts/journaling_app/</link>
+      <pubDate>Mon, 06 Nov 2023 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/journaling_app/</guid>
+      <description>An Expo App for iOS, that records your voice and transcribes it using OpenAI to the text into the Google Doc.</description>
+    </item>
+    <item>
+      <title>Postcode bot. Freelance project.</title>
+      <link>http://localhost:1313/posts/postcode_bot/</link>
+      <pubDate>Sat, 17 Sep 2022 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/postcode_bot/</guid>
+      <description>Telegram bot that used users’ input of zip code to show social, demographic, and economic data about specific area.</description>
+    </item>
+  </channel>
+</rss>

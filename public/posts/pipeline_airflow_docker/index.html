@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="shortcut icon" type="image/png" href="http://localhost:1313/favicon.ico" />
+<meta property="og:url" content="http://localhost:1313/posts/pipeline_airflow_docker/">
+  <meta property="og:site_name" content="Mariia Vysochina">
+  <meta property="og:title" content="Data Pipeline with Airflow and Docker. Work Project.">
+  <meta property="og:description" content="This capstone project was developed as part of the Data Engineering BootCamp I attended in summer 2024. It directly addresses a real-life challenge I encountered in my current role - automating the data pipeline to efficiently process and transform raw Chatfuel data.">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2024-12-15T00:00:00+00:00">
+    <meta property="article:modified_time" content="2024-12-15T00:00:00+00:00">
+    <meta property="article:tag" content="Python">
+    <meta property="article:tag" content="Airflow">
+    <meta property="article:tag" content="Dbt">
+    <meta property="article:tag" content="Docker">
+    <meta property="article:tag" content="GCP">
+
+<title>Mariia Vysochina | Data Pipeline with Airflow and Docker. Work Project.</title>
+
+    <link rel="stylesheet" href="/css/main.css">
+  
+      <link rel="stylesheet" href="/css/palette/dracula.css">
+
+      <script src="/js/main.js"></script>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
+</head>
+
+  
+<body
+>
+  
+  <main>
+    
+  <div class="container pt-5">
+    <div class="row mt-5 pt-5">
+      
+  <nav aria-label="breadcrumb" class="small">
+    <ol class="breadcrumb fw-bold">
+    <li class="breadcrumb-item">
+      <a href="/"
+        
+      >home</a>
+      
+    </li>
+    <li class="breadcrumb-item">
+      <a href="/experience"
+        
+      >experience</a>
+      
+    </li>
+    <li class="breadcrumb-item">
+      <a href="/posts"
+        class="text-decoration-underline link-offset-3"
+        
+      >posts</a>
+      
+    </li>
+    <li class="breadcrumb-item">
+      <a href="https://github.com/mariavyso"
+        
+          target="_blank" rel="noopener noreferrer"
+        
+      >github</a>
+      
+    </li>
+    <li class="breadcrumb-item">
+      <a href="https://www.linkedin.com/in/vysochina/"
+        
+          target="_blank" rel="noopener noreferrer"
+        
+      >linkedin</a>
+      
+    </li>
+    </ol>
+  </nav>
+
+    </div>
+    
+    <div class="d-none d-lg-block position-fixed end-0 small toc">
+      <p class="toc-title">
+        Table of Contents:
+      </p>
+      <nav id="TableOfContents">
+  <ul>
+    <li><a href="#summary">Summary:</a></li>
+    <li><a href="#tools-i-leaned-on">Tools, I leaned on:</a></li>
+    <li><a href="#key-parts-of-the-project">Key parts of the project</a></li>
+    <li><a href="#aftermath">Aftermath</a></li>
+  </ul>
+</nav>
+    </div>
+    
+    <div class="post">
+      <header class="mb-4">
+        <h1 class="text-uppercase">Data Pipeline with Airflow and Docker. Work Project.</h1>
+        
+        
+        <div aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item small">
+              
+              <time datetime="2024-12-15T00:00:00&#43;00:00">December 15, 2024</time>
+            </li>
+            
+            
+            <li class="breadcrumb-item small">
+              3 minutes
+            </li>
+          </ol>
+        </div>
+      </header>
+      <article>
+        <h2 id="summary">Summary:</h2>
+<p>This capstone project was developed as part of the Data Engineering BootCamp I attended in summer 2024. It directly addresses a real-life challenge I encountered in my current job - automating the data pipeline to efficiently process and transform raw Chatfuel data. By reverse-engineering a non-standard API, simulating event-based data, and implementing robust data transformations, I built a scalable solution that delivers actionable insights daily.</p>
+<h2 id="tools-i-leaned-on">Tools, I leaned on:</h2>
+<p>Python, Airflow, Docker cantainer on a remote Ubuntu server, dbt, BigQuery, Looker.</p>
+<hr>
+<p>During the summer 2024 Data Engineering BootCamp at DataExpert.io, I had the opportunity to tackle a challenging problem that I face in my current role. This project was not only a learning experience but also a practical solution to streamline the messy and manual process of handling raw Chatfuel data.
+FYI: chatfuel is a no-code platform used for building Facebook Messenger bots to send weekly content and interact with subscribers.
+Chatfuel provides a visual interface for filtering user base attributes, but it is very slow and makes thorough analysis difficult.</p>
+<h2 id="key-parts-of-the-project">Key parts of the project</h2>
+<br>
+<ol>
+<li>
+<p><strong>Advanced data extraction.</strong></p>
+<p>Chatfuel has a total of 3 public APIs:</p>
+<ul>
+<li>GraphQL without an introspection possibility</li>
+<li>JSON API without useful entry points for my task</li>
+<li>another API is for the export of the userbase, but this request is very slow and doesn&rsquo;t send full data, so it is useless for the analysis.</li>
+</ul>
+<p>GraphQL API was made to support the visual interface of the platform and of course, there is no public documentation for it.
+Therefore, my only path was to reverse-engineer requests to their GraphQL database (thanks to Google Chrome for DevTools and Inspect!).</p>
+<p>But just making a request was not enough, you can read more about that adventure <a href="https://github.com/mariavyso/dataexpert_capstone_project?tab=readme-ov-file#scope-of-the-project">here</a>.</p>
+</li>
+<li>
+<p><strong>Simulating event-based data.</strong></p>
+<p>Chatfuel doesn&rsquo;t share with us the event-based data (I know that they have it, though).
+To overcome this, I have decided to simulate event-based data myself. Because users interact with us only when we send them something, which happens 2-3 times per week, I can create an incremental table and write users’ attributes as an event, with the date of this event being the date when I pulled this data from Chatfuel. This approach wouldn’t allow me to use this event date in an incremental strategy, but it would create a historical data point that could be used in further analysis.</p>
+</li>
+<li>
+<p><strong>Huge transformation pipeline with DBT and BigQuery.</strong></p>
+<p>Once the raw data was ingested into BigQuery and Gogle Cloud Storage, I used dbt to perform incremental transformations. You can read about it more <a href="https://github.com/mariavyso/dataexpert_capstone_project?tab=readme-ov-file#data-transformation-with-dbt-in-bigquery">here</a>.</p>
+<p>And I leveraged medallion architecture, so my end tables after all transformations are business-ready. Plus, I added the tests layer for all tables to keep the data consistent.</p>
+</li>
+<li>
+<p><strong>Orchestration with Airflow.</strong></p>
+<p>I&rsquo;m using Airflow in Docker container on Ubuntu server to orchestrate the entire pipeline. This automation covers data collection, transformation, and even error handling. The system is scheduled to run daily after midnight, and as a final step I set up automation to update the Looker dashboard with the fresh data, that visualizes key performance indicators and trends.</p>
+</li>
+<li>
+<p><strong>I dived deeper into <a href="https://github.com/mariavyso/dataexpert_capstone_project?tab=readme-ov-file#alternatives-and-scaling-opportunities">possible scaling opportunities</a></strong>, but in the end, I built a better solution for handling the data from Chatfuel, but it is for another story.</p>
+<p><em>(Spoiler: I built my own FB App!)</em></p>
+</li>
+</ol>
+<p>For a more detailed description of the project’s architecture, transformation steps, and the code itself, you can dive into the <a href="https://github.com/mariavyso/dataexpert_capstone_project">repository on GitHub</a>. Of course some parts of it were changed and I added more tasks into the Airflow, which weren&rsquo;t added to public repo, but it will give you a taste of it, at least.</p>
+<hr>
+<h2 id="aftermath">Aftermath</h2>
+<p>I really enjoyed working on this project. I gained deeper knowledge about tools and gained hands-on experience in delivering such a pipeline, being the only data engineer on the team in a fast-paced environment.</p>
+
+      </article>
+      
+  <div class="tags pb-4 pt-2">
+    
+    
+        <a class="badge rounded-pill text-uppercase text-bg-secondary" href="/tags/python/">Python</a>
+        <a class="badge rounded-pill text-uppercase text-bg-secondary" href="/tags/airflow/">Airflow</a>
+        <a class="badge rounded-pill text-uppercase text-bg-secondary" href="/tags/dbt/">Dbt</a>
+        <a class="badge rounded-pill text-uppercase text-bg-secondary" href="/tags/docker/">Docker</a>
+        <a class="badge rounded-pill text-uppercase text-bg-secondary" href="/tags/gcp/">GCP</a>
+  </div>
+
+      <div class="row">
+    <div class="col-md">
+        
+        <a href="http://localhost:1313/posts/cf_chrome_extension/">
+            <span>previous: </span>
+            <span>ChatFuel Chrome Extension. Work Project.</span>
+        </a>
+        
+    </div>
+    <div class="col-md text-md-end">
+        
+        <a href="http://localhost:1313/posts/diy_handbag/">
+            <span>next: </span>
+            <span>DIY 3d printed handbag. Pet Project.</span>
+        </a>
+        
+    </div>
+</div>
+    </div>
+  </div>
+  <footer>
+    <div class="container mt-4 pb-1">
+    <p class="small opacity-75">
+        © 2025
+        
+    </p>
+</div>
+
+  </footer>
+
+  </main>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+</body>
+</html>

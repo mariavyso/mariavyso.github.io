@@ -1,0 +1,58 @@
+baseURL = 'https://vysochinam.com'
+languageCode = 'en-us'
+title = 'Mariia Vysochina'
+theme = "not-much"
+copyright = "© {year}"
+
+
+[markup]
+  [markup.highlight]
+    style = 'dracula'
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true
+
+
+[params]
+theme = "light"
+palette = "dracula"
+showThemeNotice = false
+showPostsSummary = true
+
+
+# Navigation
+[menu]
+  [[menu.main]]
+    identifier = "home"
+    name = "home"
+    title = "Home"
+    url = "/"
+    weight = 1
+
+  [[menu.main]]
+    identifier = "posts"
+    name = "posts"
+    title = "posts"
+    url = "/posts"
+    weight = 3
+
+  [[menu.main]]
+    identifier = "experience"
+    name = "experience"
+    title = "Experience"
+    url = "/experience"
+    weight = 2
+
+  [[menu.main]]
+    identifier = "github"
+    name = "github"
+    title = "GitHub"
+    url = "https://github.com/mariavyso"
+    weight = 4
+
+  [[menu.main]]
+    identifier = "linkedin"
+    name = "linkedin"
+    title = "Linkedin"
+    url = "https://www.linkedin.com/in/vysochina/"
+    weight = 5
