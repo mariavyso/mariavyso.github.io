@@ -13,7 +13,7 @@ toc: true
 ## Summary:
 This capstone project was developed as part of the Data Engineering BootCamp I attended in summer 2024. It directly addresses a real-life challenge I encountered in my current job - automating the data pipeline to efficiently process and transform raw Chatfuel data. By reverse-engineering a non-standard API, simulating event-based data, and implementing robust data transformations, I built a scalable solution that delivers actionable insights daily.
 
-## Tools, I leaned on:
+## Tools, I used:
 Python, Airflow, Docker cantainer on a remote Ubuntu server, dbt, BigQuery, Looker.
 
 _____________________________________________________________________________________________

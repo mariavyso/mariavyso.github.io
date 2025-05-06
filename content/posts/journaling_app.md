@@ -13,7 +13,7 @@ toc: true
 ## Summary:
 This is the story of how I built a voice-to-text journaling app. Starting from a need to keep up with my thoughts, this project pushed my limits. I tackled tech choices, solved tricky problems, and learned loads – especially about keeping things simple and user-focused. Big learning curve, bigger rewards!
 
-## Tools, I leaned on:
+## Tools, I used:
 Expo, OpenAI, GCP.
 
 The code for this project is [here](https://github.com/mariavyso/journaling_app)!

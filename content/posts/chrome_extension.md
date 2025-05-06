@@ -14,7 +14,7 @@ toc: true
 This is a real-life case study about one of my work projects. Facing inefficiencies and limitations of the no-code tool we used, I built a Chrome extension to streamline our data analysis process and enhance error detection.
 This tool reduces the time we spend on manual data checks and analysis by 25% per month, significantly boosting team productivity.
 
-## Tools, I leaned on:
+## Tools, I used:
 JS, Python, GCP.
 
 _____________________________________________________________________________________________

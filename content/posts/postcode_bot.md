@@ -13,7 +13,7 @@ toc: true
 ## Summary:
 This is a real-life case study about how I built a Telegram bot with Python for a startup, diving into asynchronous programming and learning a ton along the way. The bot was used as a prototype for validating a startup's hypothesis.
 
-## Tools, I leaned on:
+## Tools, I used:
 BigQuery, Heroku, and the patience of my senior software-engineer mentor.
 _____________________________________________________________________________________________
 I have a passion for helping startups. Once, I worked with a company, that wanted to build a platform, that used users’ input of zip code to show social, demographic, and economic data about this area. Of course, there must be more interesting data and insights in the future, but this task was pretty interesting for me. After retrieving all the open data, and long hours of cleaning and transforming it, I finally had about 10 datasets that I put in the BigQuery.
